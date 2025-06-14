@@ -13,16 +13,46 @@ function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({
+    firstName: '',
+    lastName: ''
+  });
   const navigate = useNavigate();
+
+  const validateName = (name, field) => {
+    if (!name.trim()) {
+      setFormErrors(prev => ({
+        ...prev,
+        [field]: 'This field is required'
+      }));
+      return false;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(name)) {
+      setFormErrors(prev => ({
+        ...prev,
+        [field]: 'Only letters and spaces are allowed'
+      }));
+      return false;
+    }
+    setFormErrors(prev => ({
+      ...prev,
+      [field]: ''
+    }));
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password.length < 8) {
-      toast.error("Password must be at least 8 characters long");
+    
+    const isFirstNameValid = validateName(firstName, 'firstName');
+    const isLastNameValid = validateName(lastName, 'lastName');
+    
+    if (!isFirstNameValid || !isLastNameValid) {
       return;
     }
-    if (!firstName.trim() || !lastName.trim()) {
-      toast.error('Please enter both first and last name');
+
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
       return;
     }
 
@@ -67,22 +97,34 @@ function Register() {
             <div className="form-group">
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${formErrors.firstName ? 'error' : ''}`}
                 placeholder="First Name"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                  validateName(e.target.value, 'firstName');
+                }}
                 required
               />
+              {formErrors.firstName && (
+                <div className="error-message">{formErrors.firstName}</div>
+              )}
             </div>
             <div className="form-group">
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${formErrors.lastName ? 'error' : ''}`}
                 placeholder="Last Name"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                  validateName(e.target.value, 'lastName');
+                }}
                 required
               />
+              {formErrors.lastName && (
+                <div className="error-message">{formErrors.lastName}</div>
+              )}
             </div>
           </div>
 

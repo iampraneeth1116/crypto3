@@ -14,15 +14,11 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  IconButton,
-  Tooltip,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import "./profile.css";
 
 function Profile() {
   const { user, userDetails } = useAuth();
@@ -69,10 +65,6 @@ function Profile() {
     }
   };
 
-  const handleBack = () => {
-    navigate("/dashboard");
-  };
-
   if (loading) {
     return (
       <Box
@@ -88,22 +80,6 @@ function Profile() {
 
   return (
     <Container maxWidth="md">
-      <Box sx={{ position: "relative", mt: 2 }}>
-        <Tooltip title="Back to Dashboard">
-          <IconButton
-            onClick={handleBack}
-            sx={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              color: "primary.main",
-            }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
-
       <Paper
         elevation={3}
         sx={{
@@ -118,7 +94,7 @@ function Profile() {
       >
         <Avatar
           src={user?.photoURL}
-          alt={userDetails?.firstName || "Profile"}
+          alt={user?.displayName || "Profile"}
           sx={{
             width: 120,
             height: 120,
@@ -130,7 +106,7 @@ function Profile() {
           {!user?.photoURL && <PersonIcon sx={{ fontSize: 60 }} />}
         </Avatar>
 
-        <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
+        <Typography variant="h4" gutterBottom>
           {userDetails?.firstName} {userDetails?.lastName}
         </Typography>
 
@@ -142,71 +118,31 @@ function Profile() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
-            <Box sx={{ textAlign: "center" }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                First Name
-              </Typography>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                {userDetails?.firstName || "Not set"}
-              </Typography>
-            </Box>
+            <Typography variant="subtitle2" color="text.secondary">
+              Account Created
+            </Typography>
+            <Typography variant="body1">
+              {userDetails?.createdAt?.toDate().toLocaleDateString()}
+            </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Box sx={{ textAlign: "center" }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                Last Name
-              </Typography>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                {userDetails?.lastName || "Not set"}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box sx={{ textAlign: "center" }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                Account Created
-              </Typography>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                {userDetails?.createdAt?.toDate().toLocaleDateString()}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box sx={{ textAlign: "center" }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                Last Login
-              </Typography>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                {userDetails?.lastLogin?.toDate().toLocaleDateString()}
-              </Typography>
-            </Box>
+            <Typography variant="subtitle2" color="text.secondary">
+              Last Login
+            </Typography>
+            <Typography variant="body1">
+              {userDetails?.lastLogin?.toDate().toLocaleDateString()}
+            </Typography>
           </Grid>
         </Grid>
 
-        <Box
-          sx={{
-            mt: 4,
-            width: "100%",
-            display: "flex",
-            gap: 2,
-            flexDirection: { xs: "column", sm: "row" },
-          }}
-        >
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<ArrowBackIcon />}
-            onClick={handleBack}
-            sx={{ flex: 1 }}
-          >
-            Back to Dashboard
-          </Button>
+        <Box sx={{ mt: 4, width: "100%" }}>
           <Button
             variant="contained"
             color="error"
             startIcon={<LogoutIcon />}
             onClick={handleLogout}
-            sx={{ flex: 1 }}
+            fullWidth
+            sx={{ mt: 2 }}
           >
             Logout
           </Button>
