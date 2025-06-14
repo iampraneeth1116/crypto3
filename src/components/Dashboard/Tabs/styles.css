@@ -1,0 +1,43 @@
+.list-flex {
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-block: 1rem;
+}
+
+.TabPanel {
+  margin-top: 1rem;
+}
+
+@media screen and (max-width: 1400px) {
+  .list-flex {
+    width: 95%;
+  }
+
+  .TabPanel {
+    margin-top: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .list-flex {
+    width: 98%;
+    margin-block: 0.8rem;
+  }
+
+  .TabPanel {
+    margin-top: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .list-flex {
+    width: 100%;
+    margin-block: 0.5rem;
+  }
+
+  .TabPanel {
+    margin-top: 0.4rem;
+  }
+}

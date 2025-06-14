@@ -1,0 +1,213 @@
+.watchlist-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--black);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.watchlist-content {
+  flex: 1;
+  padding-bottom: 2rem;
+}
+
+.watchlist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 60vh;
+  background-color: var(--darkgrey);
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 0.8rem;
+}
+
+.watchlist-empty h1 {
+  color: var(--white);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.watchlist-empty p {
+  color: var(--grey);
+  font-size: 1.2rem;
+  margin: 0;
+  max-width: 600px;
+}
+
+.watchlist-empty a {
+  text-decoration: none;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  border-radius: 3rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+}
+
+.watchlist-empty a:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.watchlist-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  color: var(--red);
+}
+
+.watchlist-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 2rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.watchlist-status h2 {
+  color: var(--white);
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+.error-text {
+  color: var(--red);
+  font-size: 1rem;
+}
+
+.browse-link {
+  text-decoration: none;
+  color: var(--blue);
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--blue);
+  border-radius: 3rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.browse-link:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+@media screen and (max-width: 1400px) {
+  .watchlist-empty {
+    width: 95%;
+    padding: 3.5rem 1.5rem;
+  }
+
+  .watchlist-empty h1 {
+    font-size: 2.2rem;
+  }
+
+  .watchlist-empty p {
+    font-size: 1.1rem;
+    max-width: 550px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .watchlist-content {
+    padding-bottom: 1.5rem;
+  }
+
+  .watchlist-empty {
+    width: 98%;
+    padding: 3rem 1rem;
+    gap: 1.5rem;
+    min-height: 50vh;
+  }
+
+  .watchlist-empty h1 {
+    font-size: 1.8rem;
+  }
+
+  .watchlist-empty p {
+    font-size: 1rem;
+    max-width: 450px;
+  }
+
+  .watchlist-empty a {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+
+  .watchlist-status {
+    min-height: 40vh;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .watchlist-status h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .watchlist-content {
+    padding-bottom: 1rem;
+  }
+
+  .watchlist-empty {
+    width: 100%;
+    padding: 2rem 0.8rem;
+    gap: 1.2rem;
+    min-height: 40vh;
+    margin: 1rem auto;
+  }
+
+  .watchlist-empty h1 {
+    font-size: 1.5rem;
+  }
+
+  .watchlist-empty p {
+    font-size: 0.9rem;
+    max-width: 320px;
+  }
+
+  .watchlist-empty a {
+    padding: 0.7rem 1.8rem;
+    font-size: 0.9rem;
+  }
+
+  .watchlist-error {
+    padding: 1.5rem;
+    gap: 0.8rem;
+  }
+
+  .watchlist-status {
+    min-height: 35vh;
+    gap: 1.2rem;
+    padding: 1rem;
+  }
+
+  .watchlist-status h2 {
+    font-size: 1.3rem;
+  }
+
+  .error-text {
+    font-size: 0.9rem;
+  }
+}
+

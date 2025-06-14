@@ -1,0 +1,101 @@
+.pagination-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem auto;
+  width: 100%;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  margin: 1rem auto;
+  width: 90%;
+  max-width: 1200px;
+}
+
+
+.pagination-component {
+  --pagination-border: 1px solid var(--grey);
+  --pagination-hover: var(--blue);
+  --pagination-active: var(--blue);
+  margin: 0 auto;
+}
+
+.pagination-component .MuiPaginationItem-text {
+  color: var(--white);
+  border: var(--pagination-border);
+  transition: all 0.3s ease-in-out;
+  margin: 0 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pagination-component .MuiPaginationItem-text:hover {
+  background-color: var(--pagination-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 255, 0.2);
+}
+
+.pagination-component .Mui-selected {
+  background-color: var(--pagination-active) !important;
+  border-color: var(--pagination-active) !important;
+  transform: scale(1.1);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 255, 0.3);
+}
+
+.pagination-component .Mui-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-component .Mui-disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+@media screen and (max-width: 1400px) {
+  .pagination-container {
+    width: 95%;
+    padding: 1.8rem 0;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .pagination-div {
+    margin: 1.5rem auto;
+  }
+
+  .pagination-container {
+    padding: 1.5rem 0;
+    width: 98%;
+  }
+
+  .pagination-component .MuiPaginationItem-text {
+    font-size: 0.9rem;
+    min-width: 32px;
+    height: 32px;
+    margin: 0 1px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .pagination-div {
+    margin: 1rem auto;
+  }
+
+  .pagination-container {
+    padding: 1rem 0;
+    width: 100%;
+  }
+
+  .pagination-component .MuiPaginationItem-text {
+    font-size: 0.8rem;
+    min-width: 28px;
+    height: 28px;
+    margin: 0;
+  }
+}
