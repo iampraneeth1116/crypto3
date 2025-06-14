@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useAuth } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
@@ -61,4 +61,10 @@ const App = () => {
   );
 };
 
-export default App;
+const AppWrapper = () => (
+  <AuthProvider>
+    <App />
+  </AuthProvider>
+);
+
+export default AppWrapper;

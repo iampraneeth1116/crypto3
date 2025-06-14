@@ -43,20 +43,17 @@
 
 .form-control {
   width: 100%;
-  padding: 1rem 1.2rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #1a1a2e;
-  background-color: #f8f9fa;
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
   transition: all 0.3s ease;
 }
 
 .form-control:focus {
-  border-color: #0f3460;
-  box-shadow: 0 0 0 4px rgba(15, 52, 96, 0.1);
+  border-color: var(--blue);
   outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 110, 255, 0.1);
 }
 
 .form-control::placeholder {
@@ -64,30 +61,30 @@
 }
 
 .name-inputs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 1rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.name-inputs .form-group {
+  flex: 1;
 }
 
 .register-button {
   width: 100%;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(45deg, #0f3460, #16213e);
+  padding: 12px;
+  background-color: var(--blue);
+  color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 1rem;
 }
 
 .register-button:hover {
-  background: linear-gradient(45deg, #16213e, #0f3460);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(15, 52, 96, 0.2);
+  background-color: var(--darkblue);
 }
 
 .register-button:active {
@@ -95,9 +92,8 @@
 }
 
 .register-button:disabled {
-  background: #ccc;
+  background-color: #ccc;
   cursor: not-allowed;
-  transform: none;
 }
 
 .divider {
@@ -173,8 +169,8 @@
   }
 
   .name-inputs {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .form-control {

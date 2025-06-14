@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
+import { doc, setDoc } from "firebase/firestore";
 import SignInwithGoogle from "./signinwithGoogle"
 import './register.css';
 
@@ -20,23 +21,36 @@ function Register() {
       toast.error("Password must be at least 8 characters long");
       return;
     }
-    
+    if (!firstName.trim() || !lastName.trim()) {
+      toast.error('Please enter both first and last name');
+      return;
+    }
+
     try {
       setLoading(true);
+      // Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      
-      // If you're using Firestore, you can add user details like this:
-      // await setDoc(doc(db, "users", user.uid), {
-      //   firstName,
-      //   lastName,
-      //   email
-      // });
-      
-      toast.success("Registration successful!");
-      navigate('/profile');
+
+      // Create user document in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        createdAt: new Date(),
+        lastLogin: new Date(),
+        watchlist: [],
+        preferences: {
+          theme: 'light',
+          currency: 'USD'
+        }
+      });
+
+      toast.success('Successfully registered!');
+      navigate('/dashboard');
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error('Registration error:', error);
       toast.error(error.message);
     } finally {
       setLoading(false);
