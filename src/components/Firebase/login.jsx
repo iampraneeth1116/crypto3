@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth } from "./firebase";
 import SignInwithGoogle from "./signinwithGoogle";
@@ -13,30 +13,11 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Check if user is already logged in
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        navigate('/profile');
-      }
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!email || !password) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
     try {
       setLoading(true);
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log("User logged in Successfully", userCredential.user);
-      
+      await signInWithEmailAndPassword(auth, email, password);
       toast.success("Logged in successfully!");
       navigate('/profile');
     } catch (error) {
@@ -64,7 +45,6 @@ function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="email"
               />
             </div>
             
@@ -76,7 +56,6 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete="current-password"
               />
             </div>
 
@@ -88,21 +67,17 @@ function Login() {
               {loading ? "Signing in..." : "Sign In"}
             </button>
 
-            <div className="forgot-password">
-              <Link to="/forgot-password">Forgot Password?</Link>
-            </div>
-
             <div className="divider">
               <span>or continue with</span>
             </div>
 
             <SignInwithGoogle />
 
-            <div className="register-text">
-              Don't have an account? {" "}
-              <Link to="/register" className="register-link">
+            <div className="forgot-password">
+              <span>New user? </span>
+              <a href="/register" className="register-link">
                 Register Here
-              </Link>
+              </a>
             </div>
           </form>
         </div>

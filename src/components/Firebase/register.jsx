@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth } from "./firebase";
-import SignInwithGoogle from "./signinwithGoogle";
+import SignInwithGoogle from "./signinwithGoogle"
 import './register.css';
 
 function Register() {
