@@ -15,7 +15,7 @@ function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Logged in successfully!");
-      navigate('/profile');
+      navigate('/'); 
     } catch (error) {
       console.error("Login error:", error);
       toast.error(error.message);

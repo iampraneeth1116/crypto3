@@ -27,11 +27,11 @@ function Header() {
         <Link to="/compare">
           <p className={`link ${isActive('/compare') ? 'active' : ''}`}>Compare</p>
         </Link>
-        {user && (
+        
           <Link to="/watchlist">
             <p className={`link ${isActive('/watchlist') ? 'active' : ''}`}>Watchlist</p>
           </Link>
-        )}
+
         <Link to="/dashboard">
           <Button text="Dashboard" />
         </Link>
