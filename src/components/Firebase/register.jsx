@@ -9,48 +9,48 @@ import "./register.css";
 function Register() {
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+    lastName:  "",
+    email:     "",
+    password:  "",
     confirmPassword: ""
   });
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords don't match!");
+      toast.error("Passwords do not match.");
       return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
+      // 1️⃣ Firebase Auth
+      const userCred = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
+      const uid = userCred.user.uid;
 
-      await setDoc(doc(db, "users", userCredential.user.uid), {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        timestamp: new Date(),
-        watchlist: []
+      // 2️⃣ Firestore user document
+      await setDoc(doc(db, "users", uid), {
+        firstName:  formData.firstName.trim(),
+        lastName:   formData.lastName.trim(),
+        email:      formData.email,
+        watchlist:  []
       });
 
-      toast.success("Registration successful!");
+      toast.success("Account created successfully!");
       navigate("/");
-    } catch (error) {
-      toast.error(error.message);
+
+    } catch (err) {
+      toast.error(err.message || "Registration failed. Please try again.");
     }
   };
 
@@ -58,7 +58,7 @@ function Register() {
     <div className="register-container">
       <div className="register-box">
         <h1 className="register-title">Create Account</h1>
-        
+
         <form onSubmit={handleSubmit} className="register-form">
           <div className="form-row">
             <div className="input-group">
@@ -72,7 +72,7 @@ function Register() {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <label htmlFor="lastName">Last Name</label>
               <input
@@ -128,9 +128,7 @@ function Register() {
 
           <div className="login-link">
             Already have an account?{" "}
-            <span onClick={() => navigate("/login")}>
-              Login here
-            </span>
+            <span onClick={() => navigate("/login")}>Login here</span>
           </div>
         </form>
       </div>
