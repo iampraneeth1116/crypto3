@@ -1,174 +1,136 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { auth, db } from "./firebase";
 import { doc, setDoc } from "firebase/firestore";
-import SignInwithGoogle from "./signinwithGoogle"
-import './register.css';
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "./register.css";
 
 function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [formErrors, setFormErrors] = useState({
-    firstName: '',
-    lastName: ''
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
   });
+
   const navigate = useNavigate();
 
-  const validateName = (name, field) => {
-    if (!name.trim()) {
-      setFormErrors(prev => ({
-        ...prev,
-        [field]: 'This field is required'
-      }));
-      return false;
-    }
-    if (!/^[a-zA-Z\s]*$/.test(name)) {
-      setFormErrors(prev => ({
-        ...prev,
-        [field]: 'Only letters and spaces are allowed'
-      }));
-      return false;
-    }
-    setFormErrors(prev => ({
-      ...prev,
-      [field]: ''
-    }));
-    return true;
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const isFirstNameValid = validateName(firstName, 'firstName');
-    const isLastNameValid = validateName(lastName, 'lastName');
-    
-    if (!isFirstNameValid || !isLastNameValid) {
-      return;
-    }
-
-    if (password.length < 8) {
-      toast.error("Password must be at least 8 characters long");
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords don't match!");
       return;
     }
 
     try {
-      setLoading(true);
-      // Create user in Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
 
-      // Create user document in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        email: user.email,
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        createdAt: new Date(),
-        lastLogin: new Date(),
-        watchlist: [],
-        preferences: {
-          theme: 'light',
-          currency: 'USD'
-        }
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        timestamp: new Date(),
+        watchlist: []
       });
 
-      toast.success('Successfully registered!');
-      navigate('/dashboard');
+      toast.success("Registration successful!");
+      navigate("/");
     } catch (error) {
-      console.error('Registration error:', error);
       toast.error(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <div className="register-container">
-      <div className="register-card">
+      <div className="register-box">
         <h1 className="register-title">Create Account</h1>
         
-        <form onSubmit={handleSubmit}>
-          <div className="name-inputs">
-            <div className="form-group">
+        <form onSubmit={handleSubmit} className="register-form">
+          <div className="form-row">
+            <div className="input-group">
+              <label htmlFor="firstName">First Name</label>
               <input
                 type="text"
-                className={`form-control ${formErrors.firstName ? 'error' : ''}`}
-                placeholder="First Name"
-                value={firstName}
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                  validateName(e.target.value, 'firstName');
-                }}
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
                 required
               />
-              {formErrors.firstName && (
-                <div className="error-message">{formErrors.firstName}</div>
-              )}
             </div>
-            <div className="form-group">
+            
+            <div className="input-group">
+              <label htmlFor="lastName">Last Name</label>
               <input
                 type="text"
-                className={`form-control ${formErrors.lastName ? 'error' : ''}`}
-                placeholder="Last Name"
-                value={lastName}
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                  validateName(e.target.value, 'lastName');
-                }}
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
                 required
               />
-              {formErrors.lastName && (
-                <div className="error-message">{formErrors.lastName}</div>
-              )}
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
-              className="form-control"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
-          
-          <div className="form-group">
+
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
             <input
               type="password"
-              className="form-control"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               required
             />
-            <div className="password-requirements">
-              Must be at least 8 characters long
-            </div>
           </div>
 
-          <button 
-            type="submit" 
-            className="register-button"
-            disabled={loading}
-          >
-            {loading ? "Creating Account..." : "Register"}
+          <div className="input-group">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="register-button">
+            Create Account
           </button>
 
-          <div className="divider">
-            <span>or register with</span>
-          </div>
-
-          <SignInwithGoogle />
-
-          <div className="login-text">
-            Already have an account? <Link to="/login" className="login-link">Login Here</Link>
+          <div className="login-link">
+            Already have an account?{" "}
+            <span onClick={() => navigate("/login")}>
+              Login here
+            </span>
           </div>
         </form>
       </div>
