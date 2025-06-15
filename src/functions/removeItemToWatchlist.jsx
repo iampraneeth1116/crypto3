@@ -1,7 +1,16 @@
-export const removeItemToWatchlist = (e, id, setIsCoinAdded) => {
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "../components/Firebase/firebase";
+
+export const removeItemFromWatchlist = async (e, userId, coinId, setIsCoinAdded) => {
   e.preventDefault();
-  let watchlist = JSON.parse(localStorage.getItem("watchlist"));
-  const newList = watchlist.filter((coin) => coin != id);
-  setIsCoinAdded(false);
-  localStorage.setItem("watchlist", JSON.stringify(newList));
+
+  try {
+    const coinRef = doc(db, "users", userId, "watchlist", coinId);
+    await deleteDoc(coinRef);
+
+    setIsCoinAdded(false);
+    console.log("Coin removed from watchlist");
+  } catch (error) {
+    console.error("Error removing coin from watchlist:", error);
+  }
 };

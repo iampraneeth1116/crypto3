@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../components/Firebase/firebase";
+
 import Header from "../components/Common/Header";
 import TabsComponent from "../components/Dashboard/Tabs";
 import Loader from "../components/Common/Loader";
-import Footer from "../components/Common/Footer/footer"; 
+import Footer from "../components/Common/Footer/footer";
 
 import "./Watchlist.css";
 
@@ -17,21 +21,37 @@ function WatchlistView() {
   }, []);
 
   const fetchWatchlistData = async () => {
-    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-    if (watchlist.length === 0) return;
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      setError("Please log in to view your watchlist.");
+      return;
+    }
 
     setLoading(true);
     try {
+      const watchlistRef = collection(db, "users", user.uid, "watchlist");
+      const snapshot = await getDocs(watchlistRef);
+
+      const coinIds = snapshot.docs.map(doc => doc.id);
+      if (coinIds.length === 0) {
+        setCoins([]);
+        setLoading(false);
+        return;
+      }
+
+      // Fetch coin market data from CoinGecko
       const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds.join(",")}&order=market_cap_desc&sparkline=false`
       );
+
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
-      const watchlistCoins = data.filter((coin) => watchlist.includes(coin.id));
-      setCoins(watchlistCoins);
-    } catch (error) {
-      setError(error.message);
-      console.error(error);
+      setCoins(data);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching watchlist data:", err);
     }
     setLoading(false);
   };
