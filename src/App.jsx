@@ -34,14 +34,8 @@ const App = () => {
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/dashboard"
-            element={user ? <Dashboard /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/watchlist"
-            element={user ? <Watchlist /> : <Navigate to="/login" />}
-          />
+          <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/compare" element={<Compare />} />
           <Route
             path="/login"
