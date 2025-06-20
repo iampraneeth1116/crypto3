@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "./firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
-import './login.css';
+import { Button } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import "./login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,7 +17,7 @@ function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Logged in successfully!");
-      navigate('/'); 
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
       toast.error(error.message);
@@ -24,9 +26,21 @@ function Login() {
 
   return (
     <div className="login-container">
+      
+      <div className="home-button-wrapper">
+       <Button
+            variant="contained"
+            color="primary"
+           onClick={() => navigate("/")}
+            startIcon={<ArrowBackIcon />}
+          >
+          Back
+          </Button>
+      </div>
+    
       <div className="login-box">
         <h1 className="login-title">CryptoTracker</h1>
-        
+
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-field">
             <label htmlFor="email">Email</label>
@@ -55,10 +69,8 @@ function Login() {
           </button>
 
           <div className="register-link">
-            Don't have an account?{" "}
-            <span onClick={() => navigate("/register")}>
-              Register
-            </span>
+          Don't have an account? 
+            <span onClick={() => navigate("/register")}>Register</span>
           </div>
         </form>
       </div>

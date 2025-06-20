@@ -1,10 +1,21 @@
+/* ---------- Container ---------- */
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   background-color: #f5f5f5;
+  position: relative;            /* so the home button can be absolutely placed */
 }
 
+/* ---------- Home Button ---------- */
+.home-button-wrapper {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+}
+
+
+/* ---------- Login Box ---------- */
 .login-box {
   width: 100%;
   max-width: 400px;
@@ -15,6 +26,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* ---------- Title ---------- */
 .login-title {
   text-align: center;
   color: #2196f3;
@@ -24,6 +36,7 @@
   letter-spacing: 0.5px;
 }
 
+/* ---------- Form ---------- */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -32,6 +45,13 @@
 
 .form-field {
   width: 100%;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #666;
+  font-size: 14px;
 }
 
 .form-field input {
@@ -48,13 +68,18 @@
   border-color: #2196f3;
 }
 
-.form-field label {
-  display: block;
-  margin-bottom: 8px;
-  color: #666;
-  font-size: 14px;
+/* Error highlight */
+.form-field.error input {
+  border-color: #f44336;
 }
 
+.error-message {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* ---------- Buttons ---------- */
 .login-button {
   width: 100%;
   padding: 12px;
@@ -72,10 +97,17 @@
   background-color: #1976d2;
 }
 
+.login-button:disabled {
+  background-color: #90caf9;
+  cursor: not-allowed;
+}
+
+/* ---------- Register Link ---------- */
 .register-link {
   margin-top: 20px;
   text-align: center;
   color: #666;
+  font-size: 14px;
 }
 
 .register-link span {
@@ -86,21 +118,4 @@
 
 .register-link span:hover {
   text-decoration: underline;
-}
-
-/* Error states */
-.form-field.error input {
-  border-color: #f44336;
-}
-
-.error-message {
-  color: #f44336;
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-/* Loading state */
-.login-button:disabled {
-  background-color: #90caf9;
-  cursor: not-allowed;
 }

@@ -16,7 +16,7 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Enable offline persistence (indexedDB caching)
-enableIndexedDbPersistence(db).catch((err) => {
-  console.error("Offline cache error:", err.code);
-});
+// // Enable offline persistence (indexedDB caching)
+// enableIndexedDbPersistence(db).catch((err) => {
+//   console.error("Offline cache error:", err.code);
+// });

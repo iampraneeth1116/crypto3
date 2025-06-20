@@ -4,14 +4,17 @@ import { auth, db } from "./firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import "./register.css";
 
 function Register() {
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName:  "",
-    email:     "",
-    password:  "",
+    lastName: "",
+    email: "",
+    password: "",
     confirmPassword: ""
   });
 
@@ -30,32 +33,39 @@ function Register() {
     }
 
     try {
-      // 1️⃣ Firebase Auth
       const userCred = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
-      const uid = userCred.user.uid;
 
-      // 2️⃣ Firestore user document
-      await setDoc(doc(db, "users", uid), {
-        firstName:  formData.firstName.trim(),
-        lastName:   formData.lastName.trim(),
-        email:      formData.email,
-        watchlist:  []
+      await setDoc(doc(db, "users", userCred.user.uid), {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email,
+        watchlist: []
       });
 
       toast.success("Account created successfully!");
       navigate("/");
-
     } catch (err) {
-      toast.error(err.message || "Registration failed. Please try again.");
+      toast.error(err.message || "Registration failed.");
     }
   };
 
   return (
     <div className="register-container">
+      <div className="home-button-wrapper">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate("/")}
+          startIcon={<ArrowBackIcon />}
+        >
+          Back
+        </Button>
+      </div>
+
       <div className="register-box">
         <h1 className="register-title">Create Account</h1>
 
@@ -65,20 +75,19 @@ function Register() {
               <label htmlFor="firstName">First Name</label>
               <input
                 type="text"
-                id="firstName"
                 name="firstName"
+                id="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
                 required
               />
             </div>
-
             <div className="input-group">
               <label htmlFor="lastName">Last Name</label>
               <input
                 type="text"
-                id="lastName"
                 name="lastName"
+                id="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
                 required
@@ -90,8 +99,8 @@ function Register() {
             <label htmlFor="email">Email</label>
             <input
               type="email"
-              id="email"
               name="email"
+              id="email"
               value={formData.email}
               onChange={handleChange}
               required
@@ -102,8 +111,8 @@ function Register() {
             <label htmlFor="password">Password</label>
             <input
               type="password"
-              id="password"
               name="password"
+              id="password"
               value={formData.password}
               onChange={handleChange}
               required
@@ -114,8 +123,8 @@ function Register() {
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
               type="password"
-              id="confirmPassword"
               name="confirmPassword"
+              id="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
               required
